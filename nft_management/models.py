@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from user_management.models import User
 from django.db import models
 
 
@@ -15,14 +15,14 @@ class Collection(models.Model):
     collection_description = models.TextField(null=True, blank=True)
     creation_date = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(blank=True, null=True)
-    category_id = models.ForeignKey(Category, related_name="item_category", on_delete=models.PROTECT, null=True)
+    category_id = models.ForeignKey(Category, related_name="nft_category", on_delete=models.PROTECT, null=True)
     user_id = models.ForeignKey(User, related_name="profile_user", on_delete=models.CASCADE, null=False)
     is_removed = models.BooleanField(default=False)
 
 
 class Nft(models.Model):
-    nft_name = models.CharField(blank=False, null=False)
-    nft_description = models.CharField(blank=True, null=True)
+    nft_name = models.CharField(max_length=200, blank=False, null=False)
+    nft_description = models.TextField(blank=True, null=True)
     nft_image = models.ImageField(null=False, blank=False)
     royalty = models.FloatField(default=0.0)
     created_at = models.DateTimeField(auto_now=True)
@@ -35,13 +35,13 @@ class Nft(models.Model):
     sale_type = models.CharField(max_length=40, choices=choices, null=True, blank=True)
     is_hidden = models.BooleanField(default=False)
     is_removed = models.BooleanField(default=False)
-    collection_id = models.ForeignKey(Collection, related_name="item_collection", on_delete=models.CASCADE, null=False)
-    owner_id = models.ForeignKey(User, related_name="item_user", on_delete=models.CASCADE, null=False)
+    collection_id = models.ForeignKey(Collection, related_name="nft_collection", on_delete=models.CASCADE, null=False)
+    owner_id = models.ForeignKey(User, related_name="nft_owner", on_delete=models.CASCADE, null=False)
     total_views = models.IntegerField(default=0)
 
 
 class NftPriceHistory(models.Model):
-    nft_id = models.ForeignKey(Nft, related_name="item_history", on_delete=models.CASCADE, null=False)
+    nft_id = models.ForeignKey(Nft, related_name="nft_history", on_delete=models.CASCADE, null=False)
     price = models.FloatField(null=False, blank=False)
     date = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=False)
@@ -49,14 +49,14 @@ class NftPriceHistory(models.Model):
 
 class FavouriteNft(models.Model):
     user_id = models.ForeignKey(User, related_name="user_favourite", on_delete=models.CASCADE, null=False)
-    nft_id = models.ForeignKey(Nft, related_name="favourite_item", on_delete=models.CASCADE, null=False)
+    nft_id = models.ForeignKey(Nft, related_name="favourite_nft", on_delete=models.CASCADE, null=False)
     date = models.DateTimeField(auto_now=True)
     is_removed = models.BooleanField(default=False)
 
 
 class ReportedNft(models.Model):
-    nft_id = models.ForeignKey(Nft, related_name="favourite_item", on_delete=models.CASCADE, null=False)
-    reporter_id = models.ForeignKey(User, related_name="user_favourite", on_delete=models.CASCADE, null=False)
+    nft_id = models.ForeignKey(Nft, related_name="reported_nft", on_delete=models.CASCADE, null=False)
+    reporter_id = models.ForeignKey(User, related_name="reporter", on_delete=models.CASCADE, null=False)
     choices = [
         ("fake", "Fak or spam"),
         ("explicit", "Explicit and Sensitive Content"),

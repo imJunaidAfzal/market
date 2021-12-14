@@ -1,7 +1,6 @@
-from django.contrib.auth.models import User
+from user_management.models import User
 from django.db import models
-
-from NFT_Marketplace.nft_management.models import Category
+from nft_management.models import Category
 
 
 class Contact(models.Model):
