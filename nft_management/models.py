@@ -2,6 +2,13 @@ from user_management.models import User
 from django.db import models
 
 
+choices = [
+    ("is_put_on_sale", "Is Put On Sale"),
+    ("is_instant_sale_price", "Is Instant Sale Price"),
+    ("is_unlock_purchase", "Is Unlock Purchase")
+]
+
+
 class Category(models.Model):
     name = models.TextField(null=False, blank=False)
     is_active = models.BooleanField(default=True)
@@ -23,15 +30,10 @@ class Collection(models.Model):
 class Nft(models.Model):
     nft_name = models.CharField(max_length=200, blank=False, null=False)
     nft_description = models.TextField(blank=True, null=True)
-    nft_image = models.ImageField(null=False, blank=False)
+    nft_image = models.ImageField()
     royalty = models.FloatField(default=0.0)
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(blank=True, null=True)
-    choices = [
-        ("is_put_on_sale", "Is Put On Sale"),
-        ("is_instant_sale_price", "Is Instant Sale Price"),
-        ("is_unlock_purchase", "Is Unlock Purchase")
-    ]
     sale_type = models.CharField(max_length=40, choices=choices, null=True, blank=True)
     is_hidden = models.BooleanField(default=False)
     is_removed = models.BooleanField(default=False)

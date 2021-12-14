@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'user_management',
     'wallet_management',
     'rest_framework',
+    'drf_yasg',
 
 ]
 
@@ -187,7 +188,7 @@ REST_FRAMEWORK = {
         "rest_framework.parsers.FormParser",
         "rest_framework.parsers.MultiPartParser",
     ],
-    "DEFAULT_AUTHENTICATION_CLASSES": ["rest_framework_simplejwt.authentication.JWTAuthentication"],
+    # "DEFAULT_AUTHENTICATION_CLASSES": ["rest_framework_simplejwt.authentication.JWTAuthentication"],
 }
 
 PASSWORD_HASHERS = [
